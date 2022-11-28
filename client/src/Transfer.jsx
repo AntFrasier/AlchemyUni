@@ -1,32 +1,51 @@
 import { useState } from "react";
 import server from "./server";
 
-function Transfer({ address, setBalance }) {
-  const [sendAmount, setSendAmount] = useState("");
-  const [recipient, setRecipient] = useState("");
+function Transfer({ address, setBalance, setTxToSign }) {
+  
+  const [sendAmount, setSendAmount] = useState("1");
+  const [recipient, setRecipient] = useState("d4fa5075f4728243598083e9070fdae837f31683");
 
   const setValue = (setter) => (evt) => setter(evt.target.value);
+  const [hashTx, setHashTx] = useState();
 
-  async function transfer(evt) {
+  function transfer(evt) {
     evt.preventDefault();
-
-    try {
-      const {
-        data: { balance },
-      } = await server.post(`send`, {
-        sender: address,
-        amount: parseInt(sendAmount),
-        recipient,
-      });
-      setBalance(balance);
-    } catch (ex) {
-      alert(ex.response.data.message);
-    }
+    if (!address) {
+      alert("Please enter your addres in the Wallet Address");
+      return;}
+    if (!sendAmount) {
+      alert("Please enter an Amount");
+      return;}
+    if (!recipient) {
+      alert("Please enter a Recipient Address");
+      return;}
+    // else if (!amout) {alert("Please enter an amount");}
+    // if (!recipient) alert("Please enter recipent address");
+    setTxToSign({
+      sender: address,
+      amount: parseInt(sendAmount),
+      recipient})
+    
+ 
+    // try {
+    //   const {
+    //     data: { balance },
+    //     } = await server.post(`send`, {
+    //       sender: address,
+    //       amount: parseInt(sendAmount),
+    //       recipient,
+    //       HashedTx,
+    //     });
+    //   setBalance(balance);
+    // } catch (ex) {
+    //   alert(ex.response.data.message);
+    // }
   }
 
   return (
     <form className="container transfer" onSubmit={transfer}>
-      <h1>Send Transaction</h1>
+      <h2>Send Transaction</h2>
 
       <label>
         Send Amount

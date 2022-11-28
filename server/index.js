@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -6,15 +7,20 @@ const port = 3042;
 app.use(cors());
 app.use(express.json());
 
-const balances = {
-  "0x1": 100,
-  "0x2": 50,
-  "0x3": 75,
-};
+const address1 = process.env.ADDRESS1;
+const address2 = process.env.ADDRESS2;
+const address3 = process.env.ADDRESS3;
 
+console.log(address1)
+const balances = {
+  [address1]: 100,
+  [address2]: 50,
+  [address3]: 75,
+};
+//function signSync(msgHash: Uint8Array, privateKey: Uint8Array, opts?: Options): Uint8Array;
 app.get("/balance/:address", (req, res) => {
   const { address } = req.params;
-  const balance = balances[address] || 0;
+  const balance = balances[address] || 5;
   res.send({ balance });
 });
 
@@ -39,6 +45,6 @@ app.listen(port, () => {
 
 function setInitialBalance(address) {
   if (!balances[address]) {
-    balances[address] = 0;
+    balances[address] = 5;
   }
 }
