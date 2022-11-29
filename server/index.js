@@ -13,6 +13,7 @@ app.use(express.json());
 const address1 = process.env.ADDRESS1;
 const address2 = process.env.ADDRESS2;
 const address3 = process.env.ADDRESS3;
+var nonce = 0;
 
 const balances = {
   [address1]: 100,
@@ -26,13 +27,18 @@ app.get("/balance/:address", (req, res) => {
   res.send({ balance });
 });
 
+app.get("/nonce", (req, res) => {
+  res.status(200).send({ nonce });
+});
+
 app.post("/send", (req, res) => {
   const { txToSign, msgHash, txSigned,recovery } = req.body;
 
   setInitialBalance(txToSign.sender);
   setInitialBalance(txToSign.recipient);
 
-  const hashToVerify = keccak256(utf8ToBytes(JSON.stringify(txToSign)));
+  const hashToVerify = keccak256(utf8ToBytes(JSON.stringify(txToSign) + nonce.toString) );
+  
   if (toHex(hashToVerify) != msgHash) {
     res.status(403).send({ message:"Problem with the hash !"});
     return;
@@ -52,6 +58,7 @@ app.post("/send", (req, res) => {
   } else {
     balances[txToSign.sender] -= txToSign.amount;
     balances[txToSign.recipient] += txToSign.amount;
+    nonce ++;
     res.status(200).send({ balance: balances[txToSign.sender] });
   }
 });
