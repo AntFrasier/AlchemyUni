@@ -1,7 +1,8 @@
 import { useState } from "react";
-import {sign} from 'ethereum-cryptography/secp256k1';
+import {sign, getPublicKey} from 'ethereum-cryptography/secp256k1';
 import { keccak256 } from 'ethereum-cryptography/keccak';
 import{ utf8ToBytes, bytesToHex, toHex ,hexToBytes}from "ethereum-cryptography/utils";
+import server from './server';
 
 
 function Sign({txToSign, setTxToSign, setBalance}) {
@@ -16,8 +17,31 @@ function Sign({txToSign, setTxToSign, setBalance}) {
         console.log(sender, amount, recipient);
         const message = JSON.stringify(txToSign);
         const msgHash = keccak256(utf8ToBytes(message))
-        const txSigned = await sign(msgHash, pKey);
+        const txSigned = await sign(msgHash, pKey, {recovered : true});
+
+        // const publicKey = getPublicKey(pKey);
         console.log("txsigned : ",txSigned) 
+        console.log("msgHash : ",msgHash) 
+
+        try {
+            const {
+                data: { balance },
+                } = await server.post(`send`, {
+                    txToSign: txToSign,
+                    msgHash: toHex(msgHash),
+                    txSigned: toHex(txSigned[0]),
+                    recovery: txSigned[1],
+                    });
+            setBalance(balance);
+            setLoading(false);
+            setTxToSign(null)
+            } catch (ex) {
+
+            alert(ex.response.data.message);
+            setLoading(false);
+            }
+        setLoading(false);
+
     }
 
     return (

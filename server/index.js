@@ -1,4 +1,7 @@
-require('dotenv').config()
+require("dotenv").config()
+const secp = require("ethereum-cryptography/secp256k1");
+const { keccak256 } = require("ethereum-cryptography/keccak")
+const { utf8ToBytes, toHex } = require("ethereum-cryptography/utils");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -11,7 +14,6 @@ const address1 = process.env.ADDRESS1;
 const address2 = process.env.ADDRESS2;
 const address3 = process.env.ADDRESS3;
 
-console.log(address1)
 const balances = {
   [address1]: 100,
   [address2]: 50,
@@ -25,17 +27,32 @@ app.get("/balance/:address", (req, res) => {
 });
 
 app.post("/send", (req, res) => {
-  const { sender, recipient, amount } = req.body;
+  const { txToSign, msgHash, txSigned,recovery } = req.body;
 
-  setInitialBalance(sender);
-  setInitialBalance(recipient);
+  setInitialBalance(txToSign.sender);
+  setInitialBalance(txToSign.recipient);
 
-  if (balances[sender] < amount) {
+  const hashToVerify = keccak256(utf8ToBytes(JSON.stringify(txToSign)));
+  if (toHex(hashToVerify) != msgHash) {
+    res.status(403).send({ message:"Problem with the hash !"});
+    return;
+  }
+  const recoveredPublicKey =secp.recoverPublicKey(hashToVerify, txSigned, recovery)
+  const recoveredAddress = toHex(recoveredPublicKey.slice(-20));
+  console.log("recoveredAddress : ",recoveredAddress)
+  console.log("txToSign.sener : ",txToSign.sender)
+
+  if (recoveredAddress !== txToSign.sender) {
+    res.status(403).send({message:"The Private Key doent Match !"});
+    return;
+  }
+
+  if (balances[txToSign.sender] < txToSign.amount) {
     res.status(400).send({ message: "Not enough funds!" });
   } else {
-    balances[sender] -= amount;
-    balances[recipient] += amount;
-    res.send({ balance: balances[sender] });
+    balances[txToSign.sender] -= txToSign.amount;
+    balances[txToSign.recipient] += txToSign.amount;
+    res.status(200).send({ balance: balances[txToSign.sender] });
   }
 });
 
