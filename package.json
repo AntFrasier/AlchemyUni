@@ -1,0 +1,26 @@
+{
+  "name": "alchemyuni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntFrasier/AlchemyUni.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntFrasier/AlchemyUni/issues"
+  },
+  "homepage": "https://github.com/AntFrasier/AlchemyUni#readme",
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "hardhat": "^2.12.4",
+    "i": "^0.3.7",
+    "npm": "^9.2.0"
+  }
+}
