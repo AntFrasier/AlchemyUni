@@ -19,6 +19,7 @@
   "homepage": "https://github.com/AntFrasier/AlchemyUni#readme",
   "dependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "ethereum-waffle": "^3.4.4",
     "hardhat": "^2.12.4",
     "i": "^0.3.7",
     "npm": "^9.2.0"
