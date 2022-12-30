@@ -13,7 +13,13 @@ describe('Game2', function () {
     const { game } = await loadFixture(deployContractAndSetVariables);
 
     // press all the right switches to win this stage
-
+    // require(switches[20]);
+    // require(switches[47]);
+    // require(switches[212]);
+    let tx1 = game.switchOn(20);
+    let tx2 = game.switchOn(47);
+    let tx3 = game.switchOn(212);
+    await Promise.all([tx1,tx2,tx3]);
     await game.win();
 
     // leave this assertion as-is
