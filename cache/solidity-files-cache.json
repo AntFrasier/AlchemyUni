@@ -112,6 +112,44 @@
       "artifacts": [
         "AddressUpgradeable"
       ]
+    },
+    "E:\\Dropbox\\Cyril\\gitProjects\\alchemy ethereum dev bootcamp\\week6\\erc20-indexer\\contracts\\VendingMachineV2.sol": {
+      "lastModificationDate": 1675344652644,
+      "contentHash": "b0bd38c246ea262d612bb0088c5cef87",
+      "sourceName": "contracts/VendingMachineV2.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "VendingMachineV2"
+      ]
     }
   }
 }
