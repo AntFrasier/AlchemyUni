@@ -1,4 +1,5 @@
 require("dotenv").config()
+const {generate} = require("./generate.js")
 const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak")
 const { utf8ToBytes, toHex } = require("ethereum-cryptography/utils");
@@ -29,6 +30,11 @@ app.get("/balance/:address", (req, res) => {
 
 app.get("/nonce", (req, res) => {
   res.status(200).send({ nonce });
+});
+
+app.get("/generate", (req, res) => {
+  const addresses = generate();
+  res.status(200).send({ addresses });
 });
 
 app.post("/send", (req, res) => {

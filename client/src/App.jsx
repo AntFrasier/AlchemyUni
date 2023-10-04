@@ -3,6 +3,7 @@ import Transfer from "./Transfer";
 import Sign from "./Sign";
 import "./App.scss";
 import { useState } from "react";
+import Welcome from "./Welcome";
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <div className="app">
+      <Welcome />
       <Wallet
         balance={balance}
         setBalance={setBalance}
