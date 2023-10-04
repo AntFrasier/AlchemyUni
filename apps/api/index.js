@@ -78,3 +78,5 @@ function setInitialBalance(address) {
     balances[address] = 5;
   }
 }
+
+module.exports = app;
