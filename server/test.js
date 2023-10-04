@@ -8,5 +8,5 @@ const secp = require("ethereum-cryptography/secp256k1");
     const signature = await secp.sign(messageHash, privateKey);
     const isSigned = secp.verify(signature, messageHash, publicKey);
 
-    console.log("signature : ",signature);
+    console.log("signature : ",isSigned);
   })();
