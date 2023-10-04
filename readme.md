@@ -28,4 +28,4 @@ The application should connect to the default server port (3042) automatically!
 
 _Hint_ - Use [nodemon](https://www.npmjs.com/package/nodemon) instead of `node` to automatically restart the server on any changes.
 
-## TODO : Add a nonce or something to avoid the same TX to be send more than once !
+cyril-maranber.com
